@@ -49,16 +49,8 @@ export const loginUser = async (req, res) => {
 };
 
 export const getAuthors = async (req, res) => {
-  const userId = req.user.id;
-  if (!userId) {
-    return res
-      .status(400)
-      .json({ message: "Unauthorized, user ID is missing" });
-  }
   try {
-    const authors = await User.find({ _id: { $ne: userId } }).select(
-      "name email _id"
-    ); // Exclude password from response
+    const authors = await User.find().select("name email _id");
     if (!authors || authors.length === 0) {
       return res.status(404).json({ message: "Authors not found" });
     }
